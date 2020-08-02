@@ -1,0 +1,94 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+
+<div class="container">
+    <label class="text-center h2">Cake Cutting Problem</label>
+    <hr />
+    <div class="row">
+        <div class="col-md-6 form-group">
+            <label>Height(X)</label>
+            <input class="form-control" type="number" id="Height" onkeypress="return isNumberWithDecimalKey(event)" />
+        </div>
+        <div class="col-md-6 form-group">
+            <label>Width(Y)</label>
+            <input class="form-control" type="number" id="Width" onkeypress="return isNumberWithDecimalKey(event)" />
+        </div>
+        <div class="col-md-6 form-group">
+            <label>Kth Piece(K)</label>
+            <input class="form-control" type="number" id="Kth" onkeypress="return isNumberWithDecimalKey(event)" />
+        </div>
+        <div class="col-md-6 form-group">
+            <label>No Of Piece (N)</label>
+            <input class="form-control" type="number" id="NOP" onkeypress="return isNumberWithDecimalKey(event)" />
+        </div>
+        <div class="col-md-6 form-group">
+            <label>Element of A(seprated by DOT)</label>
+            <input class="form-control" type="text" id="AElements" placeholder="1.2.3.4.5" onkeypress="return isNumberWithDecimalKey(event)" />
+        </div>
+        <div class="col-md-6 form-group">
+            <label>Element of B(seprated by DOT)</label>
+            <input class="form-control" type="text" id="BElements" placeholder="1.2.3.4.5" onkeypress="return isNumberWithDecimalKey(event)" />
+        </div>
+        <div class="col-md-6 form-group">
+            <label id="KthResult" class="text-center h3 text-success"></label>
+        </div>
+        <div class="col-md-6 form-group">
+            <button type="button" class="btn btn-primary" id="btn-get-result"> Get Result</button>
+        </div>
+
+    </div>
+</div>
+
+
+@section  Scripts{
+    <script>
+        $("#btn-get-result").on("click", function () {
+            if ($("#Height").val() == "") {
+                alert("Please enter valid height");
+                return false;
+            }
+            if ($("#Width").val() == "") {
+                alert("Please enter valid width");
+                return false;
+            }
+            if ($("#Kth").val() == "") {
+                alert("Please enter valid value for K");
+                return false;
+            }
+            if ($("#NOP").val() == "") {
+                alert("Please enter valid value for N");
+                return false;
+            }
+            if ($("#AElements").val() == "") {
+                alert("Please enter valid Elements for A");
+                return false;
+            }
+            if ($("#BElements").val() == "") {
+                alert("Please enter valid Elements for B");
+                return false;
+            }
+            var calculateModel = {
+                "Height": $("#Height").val(),
+                "Width": $("#Width").val(),
+                "Kth": $("#Kth").val(),
+                "NOP": $("#NOP").val(),
+                "AElements": $("#AElements").val(),
+                "BElements": $("#BElements").val(),
+            }
+            $.ajax({
+                url: '/Home/GetData',
+                type: 'POST',
+                data: calculateModel,
+                success: function (result) {
+                    if (result.isSuccess) {
+                        $("#KthResult").text("The Kth Piece of cake cutting is : " + result.result);
+                    } else {
+                        $("#KthResult").text("Something went wrong, please try with diffrent input");
+                    }
+                }
+            })
+        })
+    </script>
+}
